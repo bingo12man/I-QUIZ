@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>LOGIN</title>
+      <link rel="stylesheet" type="text/css" href="/css/login.css">
+  </head>
+  <body>
+  
+  <div class="container container1 ">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Login</h5>
+            <% if (errorMessage) { %>
+              <p class="card-title text-center" style="color:red;font-size: 14px;"><%= errorMessage %></p>
+            <% } %>
+            <form class="form-signin" action="/login" method="post" novalidate>
+              <div class="form-label-group">
+                <input type="text" name="username" id="inputUser" class="form-control <%= validationErrors.find(e => e.param === 'username') ? 'invalid' : '' %>" placeholder="<%= oldinput.username? '' : 'User Name' %>"value="<%= oldinput.username %>" required autofocus>
+                  <label for="inputUser">User Name</label>
+              </div>
+             
+
+              <div class="form-label-group">
+                <input type="password" name="password" id="inputPassword" class="form-control <%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" placeholder="Password" value='' required>
+                <label for="inputPassword">Password</label>
+              </div>
+                 <div >
+
+               
+                <hr class="my-4">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signin" style="background-color:black; color:white; border-color:black;" type="submit" >login</button>
+              <a href="/signup" class="btn btn-lg btn-primary btn-block text-uppercase" id="signin" style="background-color:black; color:white; border-color:black;">Sign up</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="max-age=0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/quiz.css">
+    <title>Question</title>
+
+    <script>
+
+    function funcsub()
+    {
+    document.getElementById("submit").submit();
+    }
+
+function timer(temp,cont_temp){
+    var second_temp = "second"+temp;
+    var clockdiv_temp = "inner_clock_div"+temp; 
+    var second_text_temp = "second_inner_text"+temp
+    var t= <%= time + 1 %>;
+    var x = setInterval(function() { 
+      document.getElementById(clockdiv_temp).style.background ="black"; 
+    t = t-1;
+    // var now = new Date().getTime(); /
+    // var t = deadline - now; 
+    // var seconds = Math.floor((t % (1000 * 60)) / 1000); 
+    document.getElementById(second_temp).innerHTML =t;
+    if(t < 5){
+        if(t%2 == 0){
+        document.getElementById(clockdiv_temp).style.background = "red";
+        }
+        else{
+            document.getElementById(clockdiv_temp).style.background ="black"; 
+        }
+        
+
+    }
+    if (t <= 0) { 
+            clearInterval(x); 
+            document.getElementById(second_temp).innerHTML = '0'; 
+            document.getElementById(second_text_temp).innerHTML = "TIME UP!!";
+            document.getElementById(clockdiv_temp).style.background = "red";
+            if(document.getElementById(cont_temp).style.display == "block"){
+
+              <% i=1;
+              for( ; i < questions.length ; i++) { %>
+
+              if(temp == <%= i %>){
+                page<%= i+1 %>();
+              }
+
+              <% }; %>
+
+              if(temp == <%= i %>){
+                document.getElementById("submit").submit();
+              }
+          }
+
+          } 
+    }, 1000); 
+  }
+
+  <% i=1;
+  for( ; i < questions.length ; i++) { %>
+
+  function page<%= i %>(){
+    <% for(j=1 ; j <= questions.length ; j++) { %>
+  document.getElementById("q<%= j %>_container").style.display = "<%= i==j? "block":"none" %>";
+  <% }; %>
+  var t<%= i %> = timer("<%= i %>","q<%= i %>_container");
+  if(t<%= i %> == 0){
+    page<%= i+1 %>();
+  }
+  }
+  <% }; %>
+
+
+  function page<%= i %>(){
+    <% for(j=1 ; j <= questions.length ; j++) { %>
+  document.getElementById("q<%= j %>_container").style.display = "<%= i==j? "block":"none" %>";
+  <% }; %>
+  var t<%= i %> = timer("<%= i %>","q<%= i %>_container");
+  if(t<%= i %> == 0){
+    document.getElementById("submit").submit();
+  }
+  }
+  
+    </script> 
+
+</head>
+<body onload="page1()">
+
+    <form id="submit" action="/result" method="post">
+
+      <% i=1;
+      for( ; i < questions.length ; i++) { %>
+
+    <div class="jumbotron jumbo_custom" id="q<%= i %>_container">
+        <div id="clockdiv"> 
+            <div id="inner_clock_div<%= i %>"> 
+                <span class="seconds" id="second<%= i %>"></span> 
+                <div class="smalltext" id = "second_inner_text<%= i %>">Seconds</div> 
+            </div> 
+            </div> 
+            <br>
+        <h1 class="display-4  question_size " id="q<%= i %>"><%= i %>.<%= questions[i-1].question %> - <%= questions[i-1].points %>points</h1> <br>
+        <hr class="my-4">
+        
+        <div class="options flex-container flex-row">
+        <% for(j=0 ; j < 4 ; j++) { %>
+            <div class="optionsli flex-container flex-wrap">
+              <input type="radio" id="q<%= i %>_op<%= j %>" name="q<%= i %>" value="<%= questions[i-1].options[j] %>" onclick="page<%= i+1 %>()">
+              <label for="q<%= i %>_op<%= j %>"><%= questions[i-1].options[j] %></label>
+            </div>
+        <% }; %>  
+        <div class="optionsli flex-container flex-wrap">do not reload or press back button</div> 
+          </div> 
+
+          <!--   <div class="flex-container">
+
+            <li>do not reload or press back button</li>
+
+            </div> -->
+
+          
+      </div>
+
+      <% }; %>
+
+
+      <div class="jumbotron jumbo_custom" id="q<%= i %>_container">
+        <div id="clockdiv"> 
+            <div id="inner_clock_div<%= i %>"> 
+                <span class="seconds" id="second<%= i %>"></span> 
+                <div class="smalltext" id = "second_inner_text<%= i %>">Seconds</div> 
+            </div> 
+            </div> 
+            <br>
+        <h1 class="display-4  question_size " id="q<%= i %>"><%= i %>.<%= questions[i-1].question %> - <%= questions[i-1].points %>points</h1> <br>
+        <hr class="my-4">
+        
+        <div class="options flex-container flex-wrap">
+            <% for(j=0 ; j < 4 ; j++) { %>
+            <div class="optionsli flex-container flex-row">
+              <input type="radio" id="q<%= i %>_op<%= j %>" name="q<%= i %>" value="<%= questions[i-1].options[j] %>" onclick="funcsub()">
+              <label for="q<%= i %>_op<%= j %>"><%= questions[i-1].options[j] %></label>
+            </div>
+            <% }; %> 
+            <div class="optionsli flex-container flex-wrap">do not reload or press back button</div> 
+          </div>
+
+          <!--  <div class="flex-container">
+
+           <p>do not reload or press back button</p>
+
+            </div>  -->
+      </div>
+    <input type="hidden" name="quizid" value="<%= quizid %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    </form>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+</body>
+</html>

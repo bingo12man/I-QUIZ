@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+   
+ 
+    <title>I-Quiz</title>
+    
+  </head>
+  <body>
+    <div class="n1 container-fluid flex-container">
+       <div class="n2">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark1 na">
+            <a class="navbar-brand" href="/dashboard" data-toggle="tooltip" data-placement="bottom" title="Platform for everyone!">I-Quiz</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="navbar-nav mr-auto">
+                <!-- <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li> -->
+                <li class="nav-item selected">
+                  <a class="nav-link selected" href="/dashboard" data-toggle="tooltip" data-placement="bottom" title="Home page">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/attendedquiz" data-toggle="tooltip" data-placement="bottom" title="Attended by you">Attended Quiz</a>
+                </li>
+                <div class="sq">
+                  <li class="nav-item">
+                    <a class="nav-link <%= setter? '':'disabled' %> " href="/setquiz1" tabindex="-1" aria-disabled="<%= setter.toString() %>"  >Set Quiz</a>
+                  </li></div>
+                  <% if(setter){ %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/quizzesset" data-toggle="tooltip" data-placement="bottom" title="setted by you">Quizzes set</a>
+                </li>
+                  <% }; %>
+                <li class="nav-item dropdown sk">
+                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Profile
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/dashboard/profile" id="prof" data-toggle="tooltip" data-placement="left" title="Personal Details">Details</a>
+                    <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="left" title="Any Questions?">Help</a>
+                    <div class="dropdown-divider"></div>
+                   <form action="\logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="dropdown-item " data-toggle="tooltip" data-placement="left" title="Click to log-out">Log Out</button>
+                    </form>
+                    
+                  </div>
+                </li>
+                
+              </ul>
+              
+            </div>
+          </nav>
+
+       </div>
+
+
+      <div class="flex-container tp1 ">
+
+      <% if(!categories.length) { %>
+          <div class="flex-container tp1 ">
+          <p class="no">NO more quizzes</p>
+          </div>
+      <% }; %>
+
+      <% k=0;
+      for(i=0 ; i < categories.length ; i++) { %>
+
+      <div class="domain " data-toggle="tooltip" data-placement="left" title="Domain Name"><span><%= categories[i].category %></span></div> 
+      <div class="tp flex-container flex-domains">
+
+      <% for(j=0 ; j < categories[i].quizzes.length ; j++,k++) { %>
+
+      <article class=" quiz-card sport" >
+      <header class="card__header">
+      <h1 class="quiz-title" >
+        <%= categories[i].quizzes[j].name %>
+      </h1>
+      <div class="dropdown-divider " style="border:1px solid #99FF44"></div>
+      </header>
+      <div id="card<%= k %>">
+      <div class="card__image">
+      <img src="/img/<%= categories[i].quizzes[j].imgurl %>" alt="<%= categories[i].quizzes[j].name %>">
+      </div>
+      <div class="card__content">
+      <p style="text-align:center;margin:3px;">BY : <%= categories[i].quizzes[j].user.name ? categories[i].quizzes[j].user.name : "IQUIZ" %></p>
+      <button type="button" class="btn btn-outline-info btn-sm box " id="diff<%= k %>" >Difficulty</button>
+      <div class="rating"><% for(y=0;y<categories[i].quizzes[j].star;y++) { %><span class="fa fa-star " aria-hidden="true"></span><% }; %></div>
+      </div>
+      </div>
+      </article>
+
+      <div style="display: none">
+      <div  id="jb<%= k %>" >
+      <p class="difficulty">Difficulty<br></p>
+      <% if(categories[i].quizzes[j].quizid[0]) { %>
+      <a class="btn btn-success btn-sm easy" href="quiz/<%= categories[i].quizzes[j].quizid[0] %>"><b>Easy</b></a>
+      <% }; %>
+      <% if(categories[i].quizzes[j].quizid[1]) { %>
+      <a class="btn btn-primary btn-sm med" href="quiz/<%= categories[i].quizzes[j].quizid[1] %>"><b>Medium</b></a>
+      <% }; %>
+      <% if(categories[i].quizzes[j].quizid[2]) { %>
+      <a class="btn btn-info btn-sm hard" href="quiz/<%= categories[i].quizzes[j].quizid[2] %>"><b>Hard</b></a>
+      <% }; %>
+      </div>
+      </div>
+
+      <% }; %>
+      <% if(sma[i]) {%>
+      <div class="showmore">
+       <a href="../category?name=<%= categories[i].category %>" class="btn btn-large btn-success">Show More..</a>
+       </div>
+       <% }; %>
+
+    </div>
+
+    <% }; %>
+    <div class="domain1"><span> </span></div> 
+
+       </div>
+
+
+       </div>
+      
+     
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+ 
+  
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+
+   <% for(i=0 ; i <= k ; i++) { %>
+
+   document.getElementById("diff<%= i %>").onclick = () =>
+   {
+    document.getElementById("card<%= i %>").innerHTML=document.getElementById("jb<%= i %>").innerHTML;
+   };
+
+   <% }; %>
+  
+  </script>  
+</body>
+</html>

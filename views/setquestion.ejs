@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/quiztaker.css">
+    <link rel="stylesheet" href="/css/result.css">
+    
+   
+ 
+    <title>I-Quiz</title>
+    
+  </head>
+  <body>
+    <div class="n1 container-fluid flex-container">
+       <div class="n2">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark1 na">
+            <a class="navbar-brand" href="/dashboard" data-toggle="tooltip" data-placement="bottom" title="Platform for everyone!">I-Quiz</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="navbar-nav mr-auto">
+                <!-- <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li> -->
+                <li class="nav-item ">
+                  <a class="nav-link " href="/dashboard" data-toggle="tooltip" data-placement="bottom" title="Home page">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/attendedquiz" data-toggle="tooltip" data-placement="bottom" title="Attended by you">Attended Quiz</a>
+                </li>
+                <div class="sq">
+                  <li class="nav-item selected">
+                    <a class="nav-link selected <%= setter? '':'disabled' %> " href="/setquiz1" tabindex="-1" aria-disabled="<%= setter.toString() %>"  >Set Quiz</a>
+                  </li></div>
+                                    <% if(setter){ %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/quizzesset" data-toggle="tooltip" data-placement="bottom" title="setted by you">Quizzes set</a>
+                </li>
+                  <% }; %>
+                <li class="nav-item dropdown sk">
+                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Profile
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/dashboard/profile" id="prof" data-toggle="tooltip" data-placement="left" title="Personal Details">Details</a>
+                    <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="left" title="Any Questions?">Help</a>
+                    <div class="dropdown-divider"></div>
+                   <form action="\logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="dropdown-item " data-toggle="tooltip" data-placement="left" title="Click to log-out">Log Out</button>
+                    </form>
+                    
+                  </div>
+                </li>
+                
+              </ul>
+              
+            </div>
+          </nav>
+
+       </div>
+
+              <div class="flex-container tp1 ">
+        <div class="flex-container">
+        </div>
+
+<div><br>
+          <!--
+          <button type="button" class="btn btn-outline-success btn-large whity" onclick="window.location.href='/dashboard'">Back to dashboard</button>
+          <br><br>
+          -->
+
+<form action="/setquiz5" method="post">
+
+<% if(!error) { %>
+
+<% for(i=1; i<=noq; i++) { %>
+
+<div class="jumbotron jumbo_custom"> 
+    
+<p class="spq1"><%= i %>.</p><textarea name="q<%= i %>" rows="1" class="display-6 form-control question_size1" placeholder="Question <%= i %>" type="text" name="" value=""></textarea><p class="spq1">?</p>
+<hr class="my-6">
+
+<div class="flex-domains">
+<input name="q<%= i %>o1" type="text" class="option form-control" placeholder="1"/>
+<input name="q<%= i %>o2" type="text" class="option form-control" placeholder="2"/>
+<input name="q<%= i %>o3" type="text" class="option form-control" placeholder="3"/>
+<input name="q<%= i %>o4" type="text" class="option form-control" placeholder="4"/> 
+</div>  
+
+<div class="flex-domains">
+<div type="text" class="option1 form-control spq2">ANSWER</div>
+<input name="q<%= i %>a" type="text" class="option form-control" placeholder="1 / 2 / 3 / 4" />
+<div type="text" class="option1 form-control spq2" >POINTS</div>
+<input name="q<%= i %>p" type="text" class="option form-control" placeholder="3 to 15" /> 
+</div> 
+<br>
+
+</div>
+<br>
+<% }; %>
+
+<% }else{ %>
+
+<% for(i=1; i<=noq; i++) { %>
+
+<div class="jumbotron jumbo_custom"> 
+    
+<p class="spq1"><%= i %>.</p><textarea name="q<%= i %>" rows="1" class="display-6 form-control question_size1" placeholder="Question <%= i %>" type="text" <% if(e[i-1][0]){ %> style="border:3px solid red;" <% }; %>><%= !e[i-1][0]?ov[i-1][0]:'' %></textarea><p class="spq1">?</p>
+<hr class="my-6">
+
+<div class="flex-domains">
+<input name="q<%= i %>o1" type="text" class="option form-control" placeholder="1"  <% if(e[i-1][1]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][1]?ov[i-1][1]:'' %>"/>
+<input name="q<%= i %>o2" type="text" class="option form-control" placeholder="2"  <% if(e[i-1][2]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][2]?ov[i-1][2]:'' %>"/>
+<input name="q<%= i %>o3" type="text" class="option form-control" placeholder="3" <% if(e[i-1][3]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][3]?ov[i-1][3]:'' %>"/>
+<input name="q<%= i %>o4" type="text" class="option form-control" placeholder="4" <% if(e[i-1][4]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][4]?ov[i-1][4]:'' %>"/> 
+</div>  
+
+<div class="flex-domains">
+<div type="text" class="option1 form-control spq2">ANSWER</div>
+<input name="q<%= i %>a" type="text" class="option form-control" placeholder="1 / 2 / 3 / 4" <% if(e[i-1][5]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][5]?ov[i-1][5]:'' %>"/>
+<div type="text" class="option1 form-control spq2" >POINTS</div>
+<input name="q<%= i %>p" type="text" class="option form-control" placeholder="3 to 15" <% if(e[i-1][6]){ %> style="border:3px solid red;" <% }; %> value="<%= !e[i-1][6]?ov[i-1][6]:'' %>"/> 
+</div> 
+<br>
+
+</div>
+<br>
+<% }; %>
+
+<% }; %>
+
+<input type="text" name="difficulty" value="<%= difficulty %>" hidden >
+<input type="text" name="sid" value="<%= sid %>" hidden >
+<input type="number" name="noq" value="<%= noq %>" hidden >
+<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+<div class="jumbotron jumbo_custom">
+<button class="btn btn-outline-success btn-large spq3" type="submit" name="submit1" >Done</button>
+</div>
+
+</form>
+      
+
+       </div>
+       </div>
+       </div>
+       
+       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+       </body>
+       </html>
